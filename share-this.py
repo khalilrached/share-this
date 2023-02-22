@@ -12,11 +12,10 @@ else:
 # check if log folder exist
 log_dir = os.path.join(log_path, 'log')
 
-if os.path.exists(log_dir) and os.path.isdir(log_dir):  # log folder exist
-    Logger.init(os.path.basename(__file__).removesuffix(".py"), log_dir)
-else:  # creating log folder in the current directory
+if not os.path.exists(log_dir):  # creating log_dir if it does not exist
     os.mkdir(log_dir)
-    Logger.init(os.path.basename(__file__).removesuffix(".py"), log_dir)
+
+Logger.init(os.path.basename(__file__).removesuffix(".py"), log_dir)
 # init logger
 logger = Logger()
 
