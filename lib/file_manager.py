@@ -5,7 +5,7 @@ import os.path
 import shutil
 import webbrowser
 
-from lib import LoggerBuilder,time_now
+from lib import LoggerBuilder, time_now
 
 logger = LoggerBuilder.getLogger(os.path.basename(__file__).removesuffix(".py"))
 
