@@ -23,7 +23,10 @@ White = "\033[97m"
 class LoggerBuilder:
     @staticmethod
     def getLogger(class_name: str):
-        return Logger(class_name)
+        if class_name[-3:] == ".py":
+            return Logger(get_file_name(class_name))
+        else:
+            return Logger(class_name)
 
     @staticmethod
     def init(app_name, log_dir, level="INFO"):
