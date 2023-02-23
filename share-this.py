@@ -1,24 +1,31 @@
 import os
 import platform
-import sys
+from sys import *
 
 from lib import LoggerBuilder
 
-if platform.uname().system.lower() == "windows":  # log dir for windows
-    log_path = fr"{os.environ['USERPROFILE']}\share-this"
-else:
-    log_path = fr"{os.environ['~']}\share-this"
 
-# check if log folder exist
-log_dir = os.path.join(log_path, 'log')
-
-if not os.path.exists(log_dir):  # creating log_dir if it does not exist
-    os.mkdir(log_dir)
-
-Logger.init(os.path.basename(__file__).removesuffix(".py"), log_dir)
 # init logger
-logger = Logger()
+logger = LoggerBuilder.getLogger(__file__)
 
 # main
 if __name__ == '__main__':
-    logger.info("welcome")
+    argv = argv[1:]
+    if "--help" in argv:
+        logger.info("help")
+        exit(0)
+    if "--version" in argv:
+        logger.info("version")
+        exit(0)
+    if "server:start" in argv:
+        raise Exception("server:start is not implemented. ")
+    if "server:stop" in argv:
+        raise Exception("server:stop is not implemented. ")
+    if "files:list" in argv:
+        raise Exception("files:list is not implemented. ")
+    if "files:add" in argv:
+        raise Exception("files:add is not implemented. ")
+    if "files:remove" in argv:
+        raise Exception("files:remove is not implemented. ")
+    logger.info("no valid command")
+    exit(0)
