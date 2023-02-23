@@ -3,28 +3,33 @@
 # move and remove files/directory
 import os.path
 import shutil
+import webbrowser
+
+from lib import LoggerBuilder,time_now
+
+logger = LoggerBuilder.getLogger(os.path.basename(__file__).removesuffix(".py"))
 
 
-def dir_size() -> int:
-    pass
+def time_now_name():
+    return time_now().replace('-', '_')
 
 
-def file_size() -> int:
-    pass
-
-
-def move_file() -> None:
-    pass
-
-
-def move_directory() -> None:
-    pass
-
-
-def compress_directory(dirpath) -> str | None:
-    # check if dirpath exist
-    if not os.path.isdir(dirpath):
-        print(f"cannot compress [{dirpath}].\nis not valid directory\n")
+def compress_directory(_dir: str) -> str | None:
+    if not os.path.isabs(_dir):
+        _dir = os.path.abspath(_dir)
+    logger.info(f"compressing {_dir}")
+    # check if _dir exist
+    if not os.path.exists(_dir):
+        logger.error(f"cannot compress [{_dir}]. does not exist.")
         return
-    
-    pass
+    if not os.path.isdir(_dir):
+        logger.error(f"cannot compress [{_dir}]. is not valid directory")
+        return
+    # check if uploads exist in public
+    uploads_dir = os.path.join(os.environ["SERVER_HOME"], "public", "uploads")
+    if not os.path.exists(uploads_dir):  # create uploads folder under public
+        os.mkdir(uploads_dir)
+    folder_name = os.path.basename(_dir)
+    shutil.make_archive(root_dir=_dir, base_name=folder_name, format='zip')
+    move = shutil.move(f"{folder_name}.zip", os.path.join(uploads_dir, f"{folder_name}_{time_now_name()}.zip"))
+    return move

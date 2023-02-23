@@ -2,7 +2,7 @@ import os
 import platform
 import sys
 
-from lib import Logger
+from lib import LoggerBuilder
 
 if platform.uname().system.lower() == "windows":  # log dir for windows
     log_path = fr"{os.environ['USERPROFILE']}\share-this"

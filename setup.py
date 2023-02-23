@@ -1,4 +1,9 @@
+import sys
+
 from setuptools import setup
+
+# add to path variables
+
 
 packages = []
 
