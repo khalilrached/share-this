@@ -46,6 +46,6 @@
     
     for more info visit:  https://github.com/khalilrached/share-this
     
-    if you have a issue or suggestion visit:  https://github.com/khalilrached/share-this/issues
+    if you have a issue or suggestion visit:  https://github.com/khalilrached/share-this/discussions
     
 ```
