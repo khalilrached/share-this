@@ -20,17 +20,46 @@ LightCyan = "\033[96m"
 White = "\033[97m"
 
 
+class LoggerBuilder:
+    @staticmethod
+    def getLogger(class_name: str):
+        if class_name[-3:] == ".py":
+            return Logger(get_file_name(class_name))
+        else:
+            return Logger(class_name)
+
+    @staticmethod
+    def init(app_name, log_dir, level="INFO"):
+        LoggerBuilder.set_app_name(app_name)
+        LoggerBuilder.set_log_path(log_dir)
+        LoggerBuilder.set_level(level)
+
+    @staticmethod
+    def set_app_name(name):
+        Logger.APP_NAME = name
+
+    @staticmethod
+    def set_level(level):
+        Logger.LEVEL = level
+
+    @staticmethod
+    def set_log_path(_dir):
+        if not os.path.isdir(_dir):
+            raise Exception(f"{_dir} is not a directory.")
+        file_name = f"{toDay()}_{Logger.APP_NAME}.log"
+        Logger.LOG_PATH = os.path.join(_dir, file_name)
+
+
 class Logger:
-    LEVEL = 'INFO'
+    LEVEL = ""
     LOG_PATH = ""
     APP_NAME = ""
 
-    def __init__(self, level='INFO'):
+    def __init__(self, class_name):
         if self.LOG_PATH == "":
             raise Exception("log path is not defined.\nuse Logger.set_log_path.")
-        self.LEVEL = level
-        self.CONSOLE_FORMAT = "[{date}] [{appname}] {color}[{level}]: {message} " + Default
-        self.FILE_FORMAT = "[{date}] [{appname}] [{level}]: {message} "
+        self.CONSOLE_FORMAT = "[{date}] [{appname}] [" + class_name + "] {color}[{level}]: {message} " + Default
+        self.FILE_FORMAT = "[{date}] [{appname}] [" + class_name + "] [{level}]: {message} "
         if os.path.exists(self.LOG_PATH):
             # write on the same file
             self.__log_file = open(self.LOG_PATH, 'a')
@@ -42,28 +71,12 @@ class Logger:
         if self.APP_NAME == "":
             self.warn("app name is null.")
 
-    @staticmethod
-    def init(name, _dir):
-        Logger.set_app_name(name)
-        Logger.set_log_path(_dir)
-
-    @staticmethod
-    def set_app_name(name):
-        Logger.APP_NAME = name
-
-    @staticmethod
-    def set_log_path(_dir):
-        if not os.path.isdir(_dir):
-            raise Exception(f"{_dir} is not a directory.")
-        file_name = f"{toDay()}_{Logger.APP_NAME}.log"
-        Logger.LOG_PATH = os.path.join(_dir, file_name)
-
     def crash(self):
         pass
 
     def error(self, message):
         console = self.CONSOLE_FORMAT.format(date=time_now(), appname=self.APP_NAME, level="ERROR", color=Red,
-                                         message=message)
+                                             message=message)
         print(console)
         log = self.FILE_FORMAT.format(date=time_now(), appname=self.APP_NAME, level="ERROR", message=message)
         self.__log_file.write(f"{log}\n")
