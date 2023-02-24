@@ -1,9 +1,9 @@
-from lib import Logger
+import lib.util
+from lib import LoggerBuilder
 
 
 def test_path():
-    Logger.init("test-app", r"C:\Users\Zoro\Desktop\www\share-this\log")
-    logger = Logger("TRACE")
+    logger = LoggerBuilder.getLogger("logger-test")
     logger.error("error")
     logger.warn("warn")
     logger.info("info")
@@ -14,5 +14,6 @@ def test_path():
 if __name__ == "__main__":
     try:
         test_path()
+        print(lib.util.get_file_name(__file__))
     except Exception as ex:
         print(ex.with_traceback())
