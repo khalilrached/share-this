@@ -36,9 +36,12 @@ class ServerHandler(BaseHTTPRequestHandler):
 class ServerFactory:
     host_name: str = None
     port: int = None
+    __server: HTTPServer = None
 
     @staticmethod
     def create_server(hostname='localhost', port=5000):
+        if ServerFactory.__server is not None:
+            return ServerFactory.__server
         ServerFactory.port = port
         ServerFactory.host_name = hostname
         Server.httpd = HTTPServer((hostname, port), ServerHandler)
