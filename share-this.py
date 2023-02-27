@@ -2,7 +2,7 @@ import os
 import platform
 from sys import *
 
-from lib import LoggerBuilder
+from lib import LoggerBuilder, parse_options, ServerFactory
 
 
 # init logger
@@ -17,8 +17,17 @@ if __name__ == '__main__':
     if "--version" in argv:
         logger.info("version")
         exit(0)
-    if "server:start" in argv:
-        raise Exception("server:start is not implemented. ")
+    if "server:start" in argv: # start the server
+        argv = argv[1:]
+        options = parse_options(argv)
+        hostname = "localhost"
+        port = 6540
+        if options.get("host") is not None:
+            hostname = options.get("host")
+        if options.get("port") is not None:
+            port = options.get("port")
+        server = ServerFactory.create_server(hostname, port)
+        server.start_server()
     if "server:stop" in argv:
         raise Exception("server:stop is not implemented. ")
     if "files:list" in argv:
