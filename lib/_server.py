@@ -64,10 +64,11 @@ class Server:
         logger.debug("starting the server. ")
         Server.thread = Thread(target=Server.serve)
         Server.thread.start()
+        logger.debug(f"pid: {os.getpid()}")
         logger.info(f"server is ready http://{ServerFactory.host_name}:{ServerFactory.port}/.")
 
     @staticmethod
-    def close_server():
+    def close_server(pid):
         logger.debug("closing the server. ")
-        Server.thread = None
+        threading.
         Server.httpd.server_close()
